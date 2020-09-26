@@ -1,2 +1,2 @@
 # VPinTools
-Small Visual Pinball which might be of use for others as well
+Small Visual Pinball tools which might be of use for others as well
