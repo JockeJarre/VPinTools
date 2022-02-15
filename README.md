@@ -36,3 +36,4 @@ GenerateAltsoundReg:
 
 	These .reg files can be activated through double click in windows to activate SoundMode=1 (ON) or SoundMode=0 (OFF) for all the folders.
 
+3D Print STL file
