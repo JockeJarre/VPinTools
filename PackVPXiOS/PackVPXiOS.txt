@@ -1,0 +1,11 @@
+This little script will take all *.vpx files and extract which rom is used and pack it together as described in https://github.com/vpinball/vpinball/blob/10.8.1/standalone/docs/ios/README.md
+
+table/
+      <table.vpx>
+      pinmame/
+              roms/
+                  <rom.zip>
+
+into tablename.vpxz
+
+Double click the script in a folder full of table.vpx files.
