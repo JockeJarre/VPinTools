@@ -21,7 +21,7 @@ REM Extract romname
 "%zip%" e -o%tmp% -y "%tablefile%" GameStg\GameData >nul
 REM findstr /R /c:"^Const cGameName" %tmp%\GameData
 if not exist %tmp%\GameData echo table script could not be extracted! & GOTO :EOF
-for /f "tokens=2 delims== eol='" %%i in ('findstr /R /c:"^Const c[Gg]ame[Nn]ame" %tmp%\GameData') do set cgamename=%%i
+for /f "tokens=2 delims== eol='" %%i in ('findstr /R /c:"^ *Const c[Gg]ame[Nn]ame" %tmp%\GameData') do set cgamename=%%i
 
 REM Remove space
 set cgamename=%cgamename: =%
