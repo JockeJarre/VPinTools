@@ -1,5 +1,5 @@
 import sys
-import configparser
+import re
 import csv
 import os
 import re
@@ -9,12 +9,23 @@ from openpyxl.worksheet.table import Table, TableStyleInfo
 # Increase CSV field size limit to handle large fields
 csv.field_size_limit(10 * 1024 * 1024)  # 10 MB, adjust as needed
 
+ISAREA_REGEX = re.compile(
+    r"(?i) (?!nobool)(?!notcolor)(?!blink)(APS\d+|APD\d+|APC[A-Za-z_]+|SHP[A-Za-z]+|ABT\d+|ABL\d+"
+    r"|ABW\d+|ABH\d+|ABF\d+|AAS\d+|AAC\d+|AAF\d+|AAD[FRD]"
+    r"|AAB[OLC]|AFDEN\d+|AFMIN\d+|AFMAX\d+|AFFADE\d+"
+    r"|AT\d+|AL\d+|AW\d+|AH\d+|AA\d+|ASA\d+|AS\d+|ASS\d+"
+    r"|ASS\d+MS|AD[LRUD]|ASD[LRUD]|[A-Za-z_]{3,19}|@[A-Za-z-]{3,19}@)"
+    )
+
 def parse_dof_config_ini(filepath):
     """
     Parses the [Config DOF] section of a directoutputconfig3?.ini file.
     Returns a list of dictionaries, one per row, with keys from the header.
     Now detects MX/RGB columns by two following empty strings after the column name in the header.
     """
+
+
+
     section = '[Config DOF]'
     in_section = False
     header = []
@@ -64,7 +75,11 @@ def parse_dof_config_ini(filepath):
                     value = row[j].strip() if j < len(row) else '0'
                     if value == "0":
                         parsed_row[header[i]] = value
-                        j += 3  # Skip next two cells
+                        j += 3
+                    elif not ISAREA_REGEX.search(value) is not None and j + 2 < len(row):
+                        # If the value matches the area regex, treat it as a 3 single values
+                        parsed_row[header[i]] = value +";"+ row[j + 1].strip() +";"+ row[j + 2].strip()
+                        j += 3
                     else:
                         parsed_row[header[i]] = value
                         j += 1
